@@ -29,8 +29,8 @@
 # Supported commands:
 #
 #   - machine: wrapper to docker-machine
-#   - compose: wrapper to docker-compose, auto create and starts machine
-#   - env/ssh/...: wrapper to docker-machine, auto create and starts machine
+#   - compose: wrapper to docker-compose
+#   - env/ssh/...: wrapper to docker-machine
 #   - other commands: wrapper to docker
 #
 # Shortcut support:
@@ -129,6 +129,9 @@ CMD="$1"
 shift
 case "$CMD" in
     machine)
+	if [[ $VERBOSE == "" ]]; then SILENT=1; fi
+	start "$NAME"
+	eval $(docker-machine env "$NAME")
 	CMD="$1"
 	shift
 	docker-machine "$CMD" "$NAME" "$@"
